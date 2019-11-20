@@ -1,0 +1,8 @@
+1,Seinfeld,85
+2,Kramer,90
+3,George,78
+4,Elaine,96
+5,Monica,98
+6,Ross,88
+7,Chandler,69
+8,Rachel,82
