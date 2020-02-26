@@ -1,33 +1,37 @@
 #include<iostream>
 #include<stdlib.h>
 using namespace std;
-class IntDLLNode
-  {	public:
-	int info;
+
+template <typename T>
+class DLLNode{
+	public:
+	T info;
 	static int count;
-	IntDLLNode *next, *prev;
-	IntDLLNode ()
-	   {	count++;
-		info=0;
+	DLLNode<T> *next, *prev;
+	DLLNode(){
+		count++;
 		next=NULL;
 		prev=NULL;
 	   }
-	~IntDLLNode()
-	   {
+	~DLLNode(){
 		count--;
-	    }
-  };
-int IntDLLNode::count=0;
-class DLList
- {	public:
-	IntDLLNode *head, *tail, *p;
+	}
+};
+template <typename T>
+int DLLNode<T>::count=0;
+
+template <typename T>
+class DLList{
+
+	public:
+	DLLNode<T> *head, *tail, *p;
 	DLList()
 	 {
 		head=tail=p=NULL;
 	  }
-	void add_to_head(int val)
+	void add_to_head(T val)
 	 {
-		IntDLLNode *newNode= new IntDLLNode();
+		DLLNode<T> *newNode= new DLLNode<T>();
 		newNode->info=val;
 		if(head==NULL)
 	 	   {
@@ -41,9 +45,9 @@ class DLList
 			head=newNode;
 		   }
 	   }
-	void add_to_tail(int val)
+	void add_to_tail(T val)
 	   {
-		IntDLLNode *newNode=new IntDLLNode();
+		DLLNode<T> *newNode=new DLLNode<T>();
 		newNode->info=val;
 		if(tail==NULL)
 		   {
@@ -62,7 +66,7 @@ class DLList
 		p=head;
 		if(head==NULL)
 		   {
-			cout<<"List is empty\n";
+			cout<<"List is empty.";
 			return;
 		    }
 		while(p!=NULL)
@@ -70,6 +74,7 @@ class DLList
 			cout<<p->info<<" ";
 			p=p->next;
 		   }
+		cout<<endl;   
 	   }
 	void traverse_reverse()
 	   {
@@ -85,7 +90,7 @@ class DLList
 			p=p->prev;
 		   }
 	   }
-	void search(int val)
+	void search(T val)
 	   {
 		p=head;
 		if(tail==NULL)
@@ -153,14 +158,14 @@ class DLList
 	
 	void delete_from_pos(int pos)
 	  {
-		if(pos<1 || pos>IntDLLNode::count)
+		if(pos<1 || pos>DLLNode<T>::count)
 		  {
 			cout<<"This position does not exist\n";
 			return;
 		   }
 		else if(pos==1)
 		   delete_from_head();
-		else if(pos==IntDLLNode::count)
+		else if(pos==DLLNode<T>::count)
 		    delete_from_tail();
 		else
 		  {
@@ -173,7 +178,7 @@ class DLList
 			p=NULL;
 		   }
 	    }
-	void delete_node(int val)
+	void delete_node(T val)
 	   {
 		p=head;
 		if(tail==NULL)
@@ -212,22 +217,26 @@ class DLList
 			cout<<"Element not found\n";
 		   }
 	   }
-	void add_at_pos(int pos,int val)
-	  {
+	void add_at_pos(int pos,T val){
+		if(pos<1 || pos>DLLNode<T>::count+1){
+			cout<<"This position does not exist\n";
+			return;
+		}
+		else{
 		p=head;
 		if(pos==1)
 		  {
 			add_to_head(val);
 			return;
 		   }
-		if(pos==IntDLLNode::count)
+		if(pos==DLLNode<T>::count+1)
 		   {
 			add_to_tail(val);
 			return;
 		    }
 		else
 		   {
-			IntDLLNode *newNode = new IntDLLNode();
+			DLLNode<T> *newNode = new DLLNode<T>();
 			newNode->info=val;
 			for(int i=0;i<pos-2;i++)
 			     p=p->next;
@@ -239,17 +248,15 @@ class DLList
 			
 
 		   }
+		}
 	  }	
-							
-
-
-
 
 };
 int main()
 {
-DLList List1;
-int ch,val,pos;
+DLList<int> List1;
+int val;
+int ch,pos;
 const std::string colour("\033[0;36m");
 const std::string reset("\033[0m");
 while(true) {
@@ -261,60 +268,61 @@ while(true) {
 	cout<<"7. Delete a node from tail		8. Delete a node from a position\n";
 	cout<<"9. Delete a node with a given value	10. Add a node at a given position\n";
 	cout<<"11. Exit\n";
-	cout<<"Enter your choice\n"<<reset;
+	cout<<"Enter your choice: "<<reset;
 	cin>>ch;
+	cout<<endl;
 	switch(ch)
 	  {
-		case 1: cout<<"Enter the value to be added\n";
+		case 1: cout<<"Enter the value to be added: ";
 			cin>>val;
 			List1.add_to_head(val);
-			cout<<"The updated list is\n";
+			cout<<"List: ";
 			List1.traverse();
 			break;
-		case 2: cout<<"Enter the value to be added\n";
+		case 2: cout<<"Enter the value to be added: ";
 			cin>>val;
 			List1.add_to_tail(val);
-			cout<<"The updated list is\n";
+			cout<<"List: ";
 			List1.traverse();
 			break;
-		case 3: cout<<"The elements in the list are\n";
+		case 3: cout<<"List: ";
 			List1.traverse();
 			break;
-		case 4: cout<<"The elements of the list in reverse order are\n";
+		case 4: cout<<"Reversed list: ";
 			List1.traverse_reverse();
 			break;
-		case 5: cout<<"Enter the element to search\n";
+		case 5: cout<<"Enter the element to search: ";
 			cin>>val;
 			List1.search(val);
 			break;
 		case 6: List1.delete_from_head();
 			cout<<"Element deleted from head\n";
-			cout<<"The updated list is\n";
+			cout<<"List: ";
 			List1.traverse();
 			break;
 		case 7: List1.delete_from_tail();
 			cout<<"Element deleted from tail\n";
-			cout<<"The updated list is\n";
+			cout<<"List: ";
 			List1.traverse();
 			break;
-		case 8: cout<<"Enter the position from where element is to be deleted\n";
+		case 8: cout<<"Enter the position from where element is to be deleted: ";
 			cin>>pos;
 			List1.delete_from_pos(pos);
-			cout<<"The updated list is\n";
+			cout<<"List: ";
 			List1.traverse();
 			break;
-		case 9: cout<<"Enter the value of the node to be deleted\n";
+		case 9: cout<<"Enter the value of the node to be deleted: ";
 			cin>>val;
 			List1.delete_node(val);
-			cout<<"The updated list is\n";
+			cout<<"List: ";
 			List1.traverse();
 			break;
-		case 10:cout<<"Enter the value to be added\n";
+		case 10:cout<<"Enter the value to be added: ";
 			cin>>val;
-			cout<<"Enter the position of the new node\n";
+			cout<<"Enter the position of the new node: ";
 			cin>>pos;
 			List1.add_at_pos(pos,val);
-			cout<<"The updated list is\n";
+			cout<<"List: ";
 			List1.traverse();
 			break;
 		case 11:exit(0);	

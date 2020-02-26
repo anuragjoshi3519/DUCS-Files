@@ -2,30 +2,30 @@
 #include<cstdlib>
 using namespace std;
 
-class IntSLLNode{
+template <typename T>
+class SLLNode{
 
  public:
-  int info;
-  IntSLLNode *next;
+  T info;
+  SLLNode<T> *next;
 
-IntSLLNode(){
-  info=0;
+SLLNode(){
   next=NULL;
 }
 
-IntSLLNode(int val,IntSLLNode* ptr){
+SLLNode(T val,SLLNode<T>* ptr){
   info=val;
   next=ptr;
 }
 
 };
 
-
-class IntSLL{
+template <typename T>
+class SLL{
  
 
-IntSLLNode* head=NULL;
-IntSLLNode* tail=NULL;
+SLLNode<T>* head=NULL;
+SLLNode<T>* tail=NULL;
 
 public:
 
@@ -34,7 +34,7 @@ void addtohead(){
   int info;
   cout<<"\nEnter the info: ";
   cin>>info;
-  IntSLLNode *node = new IntSLLNode(info,NULL);
+  SLLNode<T> *node = new SLLNode<T>(info,NULL);
   
   if(head==NULL)
   	head=tail=node;
@@ -51,7 +51,7 @@ void addtotail(){
 int info;
 cout<<"\nEnter the info: ";
 cin>>info;
-IntSLLNode *node = new IntSLLNode(info,NULL);
+SLLNode<T> *node = new SLLNode<T>(info,NULL);
 
 if(tail==NULL)
 	head=tail=node;
@@ -65,7 +65,7 @@ traverse();
 
 void delfromhead(){
 
-IntSLLNode* temp=head;
+SLLNode<T>* temp=head;
 
 if(head==NULL)cout<<"\nCannot delete, List is Empty.";
 
@@ -82,14 +82,20 @@ else if(head!=NULL){
 
 }
 
-int search(int var){
+int searchAndSwap(T var){
 
-IntSLLNode* p=head;
-int count1=0;
-
-while(p!=NULL){
-       count1++;
-	if(p->info==var)return count1;
+SLLNode<T>* p=head;
+int count1=1;
+T temp;
+if(p->info==var) return count1;
+while(p->next!=NULL){
+  count1++;
+	if(p->next->info==var){
+    temp = p->info;
+    p->info = p->next->info;
+    p->next->info = temp;
+    return count1;
+  };
 	p=p->next;
 }
 return -1;
@@ -106,7 +112,7 @@ else if(head==tail){
 }
 else{
 	
-	IntSLLNode* pt=head;
+	SLLNode<T>* pt=head;
 	while(pt->next!=tail){
 	pt=pt->next;
 	}
@@ -121,7 +127,7 @@ else{
 
 void traverse(){
 
-IntSLLNode* p=head;
+SLLNode<T>* p=head;
 cout<<"\nLinked list: ";
 
 if(p!=NULL){
@@ -135,14 +141,39 @@ else cout<<"Empty";
 
 }
 
+void reverse(){
+
+SLLNode<T> *q, *s, *p=head;
+
+if(p->next!=NULL){
+    s=p->next;
+    while(s!=NULL){
+      q=s->next;
+      s->next = p;
+      p=s;
+      s=q;
+    }
+
+    p=head;
+    head=tail;
+    tail=p;
+
+    tail->next=NULL;
+}
+
+
+}
+
 void addtopos(int);
 void delfrompos(int);
 };
 
-void IntSLL::addtopos(int pos){
+
+template <typename T>
+void SLL<T>::addtopos(int pos){
 
 int info,count1=0;
-IntSLLNode *q,*p=head;
+SLLNode<T> *q,*p=head;
 while(p!=NULL){
     count1++; 
     p=p->next;
@@ -151,7 +182,7 @@ if(pos>count1||pos<0)cout<<"\nIndex is not valid.";
 else{
 cout<<"\nEnter the info: ";
 cin>>info;
-IntSLLNode *node = new IntSLLNode(info,NULL);
+SLLNode<T> *node = new SLLNode<T>(info,NULL);
 p=head;
 if(pos==0){
     node->next=head;
@@ -176,9 +207,10 @@ traverse();
 }
 }
 
-void IntSLL::delfrompos(int pos){
+template <typename T>
+void SLL<T>::delfrompos(int pos){
 
-IntSLLNode *q,*p=head;
+SLLNode<T> *q,*p=head;
 int count1=0;
 while(p!=NULL){count1++; p=p->next;}
 if(pos>=count1||pos<0)cout<<"\nIndex is not valid.";
@@ -217,12 +249,13 @@ else {
 
 
 int main(){
-IntSLL list;
+SLL<int> list;
 char ch;
-int ele,pos;
+int ele;
+int pos;
 do{
 cout<<"\n\nMENU::\n1)Add ele to head.\n2)Add ele to tail.\n3)Add ele in a position.\n4)Delete ele from head.\n";
-cout<<"5)Delete ele from tail.\n6)Delete ele from a position.\n7)Traverse.\n8)search element.\n9)Exit.\n";
+cout<<"5)Delete ele from tail.\n6)Delete ele from a position.\n7)Reverse list.\n8)Search element and Swap.\n9)Exit.\n";
 cout<<"\nEnter your choice: ";
 cin>>ch;
 switch(ch){
@@ -242,13 +275,16 @@ case '5':list.delfromtail();
            cin>>pos;
            list.delfrompos(pos);
  break;
-case '7':list.traverse();
+case '7':list.reverse();
+         cout<<"\nList is reversed.";
+         list.traverse();
  break;
 case '8':cout<<"\nEnter ele to search: ";
           cin>>ele;
-         pos=list.search(ele);
-         if(pos!=-1)cout<<"\nElement found at index: "<<pos-1<<endl;
+         pos=list.searchAndSwap(ele);
+         if(pos!=-1)cout<<"\nElement found at index "<<pos-1<<" is swapped with its previous element."<<endl;
          else cout<<"\nElement not found.\n";
+         list.traverse();
  break;
 case '9':exit(0);
 default: cout<<"\nWrong choice!!";
