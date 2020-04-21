@@ -6,6 +6,6 @@ Steps to follow:
 4) Put the downloaded 'Location History.Json' file into the cloned repository's DCN-Assignment-2 folder.
 5) Now using terminal head to DCN-Assignment-2 folder and run : $_**python getLocationHistory.py**_
 
- _Now you will have a file by the name 'locationHistory.csv' which consists the list of the location trail of your device in CSV format.__
+ _Now you will have a file by the name 'locationHistory.csv' which consists the list of the location trail of your device in CSV format._
  
 6) To plot the locations on a map, run : $_**python plotLocations.py**_
