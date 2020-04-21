@@ -43,6 +43,17 @@ class Curr_acct extends Account{
         this.balance = balance;
         this.account_type= "current";
     }
+    public void withdraw(double amount){
+        if(balance>=amount){
+            balance-=amount;
+            System.out.println("Amount successfully debited from your account.");
+            display_balance();
+            check_min_balance();
+        }
+        else{
+            System.out.println("Your account balance is not enough to make that withdrawal.");
+        }
+    }
 
     public void check_min_balance(){
         if(balance<min_balance){
