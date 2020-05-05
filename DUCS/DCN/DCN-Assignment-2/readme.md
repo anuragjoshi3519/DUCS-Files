@@ -9,3 +9,16 @@ Steps to follow:
  _Now you will have a file by the name 'locationHistory.csv' which consists the list of the location trail of your device in CSV format._
  
 6) To plot the locations on a map, run : $_**python plotLocations.py**_
+
+**Note:**
+
+If you face `ModuleNotFoundError: No module named '_tkinter'` error due to `matplotlib.pyplot` library.
+
+do this:
+
+```bash
+pip uninstall matplotlib
+python -m pip install --upgrade pip
+pip install matplotlib
+```
+
