@@ -18,9 +18,9 @@ reverseString(s,l-1);
 int main(){
 
 string s;
-cout<<"Enter the string: ";
-cin>>s; 
+cout<<"\nEnter the string: ";
+getline(cin,s); 
 reverseString(s,s.length()-1);
-cout<<"Reversed String is "<<s;
-cout<<endl;
+cout<<"\nReversed String: "<<s;
+cout<<"\n\n";
 }

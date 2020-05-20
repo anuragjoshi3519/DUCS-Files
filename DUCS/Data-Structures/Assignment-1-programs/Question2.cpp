@@ -242,11 +242,9 @@ class DLList{
 			     p=p->next;
 			newNode->next=p->next;
 			p->next=newNode;
-			p=p->next;
-			newNode->prev=p->prev;
+			newNode->prev=p;
+			p=newNode->next;
 			p->prev=newNode;
-			
-
 		   }
 		}
 	  }	
