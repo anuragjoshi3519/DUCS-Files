@@ -2,9 +2,12 @@ import pandas as pd
 
 def insertion_sort(index_table):
     '''
+    Function that sorts the input data using Insertion Sort
+    
     Input: list of (index,city_name) of Meteorological data records (sorted on time)
     Output: list of (index,city_name) of Meteorological data records (sorted on city name)
     '''
+    
     index_table = index_table.copy()
     for index in range(1,len(index_table)):
         
@@ -23,17 +26,21 @@ def main():
     # reading unsorted meteorological data csv file
     meteorological_data_unsorted = pd.read_csv('data_unsorted.csv')
 
+
     # creating index table from the meteorological data & saving the table to a csv file
     index_table_unsorted = meteorological_data_unsorted[['index','city']].to_dict(orient='records')
     pd.DataFrame(index_table_unsorted).set_index('index').to_csv('index_table_unsorted.csv')
 
-    # sorting the records in index table using insertion sort & saving the table to a csv file
+
+    # sorting the records in index table using insertion sort & saving the table to a csv file    
     index_table_sorted = insertion_sort(index_table_unsorted)
     pd.DataFrame(index_table_sorted).set_index('index').to_csv('index_table_sorted.csv')
     
-    # Using indices of sorted index table to arrange the original meteorological data in sorted order
+    
+    # Using indices of sorted index table to arrange the original meteorological data in sorted order    
     sorted_indices = list(pd.DataFrame(index_table_sorted)['index'])
     meteorological_data_sorted = meteorological_data_unsorted.set_index('index').iloc[sorted_indices]
+
 
     # saving sorted meteorological data to a csv file
     meteorological_data_sorted.to_csv('data_sorted.csv')
